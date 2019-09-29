@@ -40,7 +40,7 @@ async def on_message(message):
         else:
             await message.channel.send('ワン！')
     elif 'ヒヒイロ' in message.content:
-        rand=random.randint(1,10000)
+        rand=random.randint(1,1000)
         print(rand)
         if rand==1 or rand==2 or rand==3:
             await message.channel.send('ヒヒイロカネが落ちたポメ！')
