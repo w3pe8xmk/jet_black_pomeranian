@@ -47,7 +47,7 @@ async def on_message(message):
         elif rand==15:
             await message.channel.send('破局を受けたポメ！')
         else:
-            await message.channel.send('オメガユニットしか落ちなかった')
+            await message.channel.send('オメガユニットしか落ちなかったポメ')
         
 
         
