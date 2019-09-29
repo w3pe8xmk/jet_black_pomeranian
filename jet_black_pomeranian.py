@@ -3,6 +3,7 @@ from datetime import datetime
 from discord.ext import tasks
 import discord
 import yaml
+import random
 
 f = open('settings.yml', 'r+')
 data = yaml.load(f, Loader = yaml.SafeLoader)
@@ -38,6 +39,18 @@ async def on_message(message):
             await message.channel.send('キエエエェェェェーーーッ！！')
         else:
             await message.channel.send('ワン！')
+    elif 'ヒヒイロ' in message.content:
+        rand=random.randint(1,10000)
+        print(rand)
+        if rand==1 or rand==2 or rand==3:
+            await message.channel.send('ヒヒイロカネが落ちたポメ！')
+        elif rand==15:
+            await message.channel.send('破局を受けたポメ！')
+        else:
+            await message.channel.send('オメガユニットしか落ちなかった')
+        
+
+        
 
 # こうゆうのファイル分けたほうが良さそう?
 # 定期発言(60秒に一回ループ)
