@@ -39,15 +39,38 @@ async def on_message(message):
             await message.channel.send('キエエエェェェェーーーッ！！')
         else:
             await message.channel.send('ワン！')
-    elif 'ヒヒイロ' in message.content:
+      # 「ヒヒイロチャレンジ」に反応する          
+    elif 'ヒヒイロチャレンジ' in message.content:
         rand=random.randint(1,1000)
+       # rand=random.randint(1,20)
         print(rand)
-        if rand==1 or rand==2 or rand==3:
+        if rand<=3:
             await message.channel.send('ヒヒイロカネが落ちたポメ！')
-        elif rand==15:
+        elif rand>=900:
             await message.channel.send('破局を受けたポメ！')
         else:
             await message.channel.send('オメガユニットしか落ちなかったポメ')
+          # 「ヒイロチャレンジ」に反応する　完全一致で反応? test兼遊び          
+    elif message.content =='ヒイロチャレンジ':
+        await message.channel.send('お前を殺すポメ')
+        
+        
+        '''
+    elif message.content.startswith('!ルシ'):
+        ##入力された内容を受け取る
+        say=message.content
+        ##!ルシの部分を消して、ルシ後の数字を取り出す
+        order=say.strip('!ルシ')
+        ##ルシディレクトリに入ってファイルオープンが丸そう
+    #    await message.channel.send(order)
+        k=order/10
+        f=open('luci.txt','r')
+        for line in f:
+            print(line)
+            
+            
+        
+    '''
         
 
         
