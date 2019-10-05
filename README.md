@@ -1,19 +1,21 @@
 `pip install pyyaml`  
 色々直すからちょっと待ってください
 
-# 実行方法
+# 初回のみ
 ```
 python3 -m pip install -U discord.py
 pip install pyyaml
+```
+
+# 実行方法
+```
 python3 jet_black_pomeranian.py
 ```
 
 # TODO
 - heroku に置く(docker化や環境変数がどうかの検討をする)
 - ルシの行動を教えてくれるbotの作成
-- 0.3%の確率でヒヒイロカネを落とすポメラニアンbot(仮)　トリガー'/ヒヒイロ'
+- 0.3%の確率でヒヒイロカネを落とすポメラニアンbot(仮) トリガー'ヒヒイロチャレンジ'
 - 古戦場の定期発言
     - 古戦場の日程を別ファイルに置いておく
     - 日程から発言する日を判別するようにする
-    
-    

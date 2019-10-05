@@ -6,15 +6,15 @@ import yaml
 import random
 
 f = open('settings.yml', 'r+')
-data = yaml.load(f, Loader = yaml.SafeLoader)
+data = yaml.load(f, Loader=yaml.SafeLoader)
 
 TOKEN = data['TOKEN']   # 自分の Bot のアクセストークン
-POMERANIAN_ID = data['POMERANIAN_ID'] # ポメラニアンのユーザーID
+POMERANIAN_ID = data['POMERANIAN_ID']  # ポメラニアンのユーザーID
 
-TSUCHINASHI_CHANNEL_ID = data['TSUCHINASHI_CHANNEL_ID'] # 通知なしチャンネル
-GRABLUE_CHANNEL_ID = data['GRABLUE_CHANNEL_ID'] # グラブルチャンネル
-HUKUDANCHO_CHANNEL_ID = data['HUKUDANCHO_CHANNEL_ID'] # 副団長とかチャンネル
-PUBLICIZE_CHANNEL_ID = data['PUBLICIZE_CHANNEL_ID'] # 連絡用チャンネル
+TSUCHINASHI_CHANNEL_ID = data['TSUCHINASHI_CHANNEL_ID']  # 通知なしチャンネル
+GRABLUE_CHANNEL_ID = data['GRABLUE_CHANNEL_ID']  # グラブルチャンネル
+HUKUDANCHO_CHANNEL_ID = data['HUKUDANCHO_CHANNEL_ID']  # 副団長とかチャンネル
+PUBLICIZE_CHANNEL_ID = data['PUBLICIZE_CHANNEL_ID']  # 連絡用チャンネル
 
 client = discord.Client()
 
@@ -39,45 +39,24 @@ async def on_message(message):
             await message.channel.send('キエエエェェェェーーーッ！！')
         else:
             await message.channel.send('ワン！')
-      # 「ヒヒイロチャレンジ」に反応する          
+    # 「ヒヒイロチャレンジ」に反応する
     elif 'ヒヒイロチャレンジ' in message.content:
-        rand=random.randint(1,1000)
-       # rand=random.randint(1,20)
-        print(rand)
-        if rand<=3:
+        rand = random.randint(1, 1000)
+        if rand <= 3:
             await message.channel.send('ヒヒイロカネが落ちたポメ！')
-        elif rand>=900:
+        elif rand >= 900:
             await message.channel.send('破局を受けたポメ！')
         else:
             await message.channel.send('オメガユニットしか落ちなかったポメ')
-          # 「ヒイロチャレンジ」に反応する　完全一致で反応? test兼遊び          
-    elif message.content =='ヒイロチャレンジ':
+    # 「ヒイロチャレンジ」に反応する 完全一致で反応? test兼遊び
+    elif message.content == 'ヒイロチャレンジ':
         await message.channel.send('お前を殺すポメ')
-        
-        
-        '''
-    elif message.content.startswith('!ルシ'):
-        ##入力された内容を受け取る
-        say=message.content
-        ##!ルシの部分を消して、ルシ後の数字を取り出す
-        order=say.strip('!ルシ')
-        ##ルシディレクトリに入ってファイルオープンが丸そう
-    #    await message.channel.send(order)
-        k=order/10
-        f=open('luci.txt','r')
-        for line in f:
-            print(line)
-            
-            
-        
-    '''
-        
-
-        
 
 # こうゆうのファイル分けたほうが良さそう?
 # 定期発言(60秒に一回ループ)
 # このやり方よくない、時間になったら実行されるようにしたい
+# 古戦場期間中じゃなくても時間にあれば動いちゃうから、コメントアウトで退避
+'''
 @tasks.loop(seconds=60)
 async def loop():
     now = datetime.now().strftime('%H:%M')
@@ -102,5 +81,5 @@ async def loop():
         await channel.send('アンケートの結果を見るポメ！')
         print(now)
 loop.start()
-
+'''
 client.run(TOKEN)
