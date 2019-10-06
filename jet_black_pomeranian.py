@@ -4,6 +4,7 @@ from discord.ext import tasks
 import discord
 import yaml
 import random
+import sys
 
 f = open('settings.yml', 'r+')
 data = yaml.load(f, Loader=yaml.SafeLoader)
@@ -31,8 +32,13 @@ async def on_message(message):
         return
     # リプライに反応する
     elif POMERANIAN_ID in mentions:
-        msg = message.author.mention + ' ワン！(ちょっと何言ってるかわからないポメ)'
-        await message.channel.send(msg)
+        if 'ハウス' in message.content:
+            await message.channel.send('寝るポメ')
+            await client.close()
+            await sys.exit()
+        else:
+            msg = message.author.mention + ' ワン！(ちょっと何言ってるかわからないポメ)'
+            await message.channel.send(msg)
     # 「ポメラニアン」に反応する
     elif 'ポメラニアン' in message.content:
         now = datetime.now().strftime('%S')
