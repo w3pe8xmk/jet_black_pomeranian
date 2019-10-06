@@ -23,6 +23,7 @@ async def on_ready():
     print('ログインしました')
 
 # メッセージ受信時に動作する処理
+# 現在受け取ったメッセージを elif で繋がって、新しいのを入れようとしたらどんどん下に増えていくので新しい関数とかでうまいこと処理されるようにしたい
 @client.event
 async def on_message(message):
     mentions = [x.id for x in message.mentions]
@@ -48,9 +49,15 @@ async def on_message(message):
             await message.channel.send('破局を受けたポメ！')
         else:
             await message.channel.send('オメガユニットしか落ちなかったポメ')
-    # 「ヒイロチャレンジ」に反応する 完全一致で反応? test兼遊び
-    elif message.content == 'ヒイロチャレンジ':
-        await message.channel.send('お前を殺すポメ')
+    # 「ルシ募集」に反応する
+    elif message.content == 'ルシ募集':
+        target_message = await message.channel.send('ダークラプチャー(HARD)の募集だポメ!\nやりたい属性のリアクションをするポメ')
+        emoji_list = client.emojis
+        # もっといい書き方あるかも
+        for data in emoji_list:
+            element_list = ['fire', 'water', 'earth', 'wind', 'light', 'dark']
+            if data.name in element_list:
+                await target_message.add_reaction(str(data))
 
 # こうゆうのファイル分けたほうが良さそう?
 # 定期発言(60秒に一回ループ)
@@ -67,9 +74,9 @@ async def loop():
         print(now)
     elif now == '07:00':
         channel = client.get_channel(PUBLICIZE_CHANNEL_ID)
-        questionnaire_message = await channel.send('今日の相手に勝ちに行くポメ?')
-        await questionnaire_message.add_reaction('👍')
-        await questionnaire_message.add_reaction('👎')
+        target_message = await channel.send('今日の相手に勝ちに行くポメ?')
+        await target_message.add_reaction('👍')
+        await target_message.add_reaction('👎')
         print(now)
     elif now == '19:59':
         channel = client.get_channel(GRABLUE_CHANNEL_ID)
