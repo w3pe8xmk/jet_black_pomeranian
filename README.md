@@ -1,16 +1,10 @@
-# 初回のみ実行
-```
-python3 -m pip install -U discord.py
-pip install pyyaml
-```
-
 # 実行方法
 ```
 python3 jet_black_pomeranian.py
 ```
 
 # TODO
-- heroku に置く(docker化や環境変数がどうかの検討をする)
+- Docker化(環境変数のため)
 - テストコードの追加?
 - アルバハ募集 6人がリアクションしたらポメラニアンが教えてくれる
 - ルシ属性
