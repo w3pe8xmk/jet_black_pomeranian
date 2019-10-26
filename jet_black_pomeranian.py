@@ -3,7 +3,6 @@ from datetime import datetime
 from discord.ext import tasks
 import discord
 import random
-import sys
 
 TOKEN = os.environ['DISCORD_TOKEN']   # 自分の Bot のアクセストークン
 POMERANIAN_ID = os.environ['POMERANIAN_ID']  # ポメラニアンのユーザーID
@@ -29,10 +28,6 @@ async def on_message(message):
     # リプライに反応する
     elif POMERANIAN_ID in mentions:
         if 'ハウス' in message.content:
-            await message.channel.send('寝るポメ')
-            await client.close()
-            await sys.exit()
-        else:
             msg = message.author.mention + ' ワン！(ちょっと何言ってるかわからないポメ)'
             await message.channel.send(msg)
     # 「ポメラニアン」に反応する
