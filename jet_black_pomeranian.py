@@ -2,20 +2,16 @@
 from datetime import datetime
 from discord.ext import tasks
 import discord
-import yaml
 import random
 import sys
 
-f = open('settings.yml', 'r+')
-data = yaml.load(f, Loader=yaml.SafeLoader)
+TOKEN = os.environ['DISCORD_TOKEN']   # 自分の Bot のアクセストークン
+POMERANIAN_ID = os.environ['POMERANIAN_ID']  # ポメラニアンのユーザーID
 
-TOKEN = data['TOKEN']   # 自分の Bot のアクセストークン
-POMERANIAN_ID = data['POMERANIAN_ID']  # ポメラニアンのユーザーID
-
-TSUCHINASHI_CHANNEL_ID = data['TSUCHINASHI_CHANNEL_ID']  # 通知なしチャンネル
-GRABLUE_CHANNEL_ID = data['GRABLUE_CHANNEL_ID']  # グラブルチャンネル
-HUKUDANCHO_CHANNEL_ID = data['HUKUDANCHO_CHANNEL_ID']  # 副団長とかチャンネル
-PUBLICIZE_CHANNEL_ID = data['PUBLICIZE_CHANNEL_ID']  # 連絡用チャンネル
+TSUCHINASHI_CHANNEL_ID = os.environ['TSUCHINASHI_CHANNEL_ID']  # 通知なしチャンネル
+GRABLUE_CHANNEL_ID = os.environ['GRABLUE_CHANNEL_ID']  # グラブルチャンネル
+HUKUDANCHO_CHANNEL_ID = os.environ['HUKUDANCHO_CHANNEL_ID']  # 副団長とかチャンネル
+PUBLICIZE_CHANNEL_ID = os.environ['PUBLICIZE_CHANNEL_ID']  # 連絡用チャンネル
 
 client = discord.Client()
 
