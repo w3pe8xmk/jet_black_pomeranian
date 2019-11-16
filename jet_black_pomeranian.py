@@ -1,12 +1,16 @@
 # coding: UTF-8
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 from discord.ext import tasks
 import discord
 import random
 import os
 import subprocess
+import yaml
 
-TOKEN = os.environ['DISCORD_TOKEN']   # 自分の Bot のアクセストークン
+f = open('unite_and_fight_schedule.yml', 'r+')
+schedule = yaml.load(f, Loader=yaml.SafeLoader)
+
+DISCORD_TOKEN = os.environ['DISCORD_TOKEN']   # 自分の Bot のアクセストークン
 POMERANIAN_ID = os.environ['POMERANIAN_ID']  # ポメラニアンのユーザーID
 
 TSUCHINASHI_CHANNEL_ID = os.environ['TSUCHINASHI_CHANNEL_ID']  # 通知なしチャンネル
@@ -49,7 +53,7 @@ async def on_message(message):
             await message.channel.send('オメガユニットしか落ちなかったポメ')
     # 「ルシ募集」に反応する
     elif message.content == 'ルシ募集':
-        target_message = await message.channel.send('ダークラプチャー(HARD)の募集だポメ!\nやりたい属性のリアクションをするポメ')
+        target_message = await message.channel.send('ダークラプチャー(HARD)の募集だポメ!\nできる属性(複数可)のリアクションをするポメ')
         emoji_list = client.emojis
         # もっといい書き方あるかも
         for data in emoji_list:
@@ -60,31 +64,37 @@ async def on_message(message):
 # こうゆうのファイル分けたほうが良さそう?
 # 定期発言(60秒に一回ループ)
 # このやり方よくない、時間になったら実行されるようにしたい
-# 古戦場期間中じゃなくても時間にあれば動いちゃうから、コメントアウトで退避
-'''
+# とりあえず48回古戦場だけ対応、汎用的にしたい
 @tasks.loop(seconds=60)
 async def loop():
-    now = datetime.now().strftime('%H:%M')
+    JST = timezone(timedelta(hours=+9), 'JST')
+    # now = datetime.now(JST).strftime('%Y/%m/%d %H:%M')
+    now = datetime.now(JST)
 
-    if now == '00:00':
-        channel = client.get_channel(GRABLUE_CHANNEL_ID)
-        await channel.send('お疲れ様だポメ！')
-        print(now)
-    elif now == '07:00':
-        channel = client.get_channel(PUBLICIZE_CHANNEL_ID)
-        target_message = await channel.send('今日の相手に勝ちに行くポメ?')
-        await target_message.add_reaction('👍')
-        await target_message.add_reaction('👎')
-        print(now)
-    elif now == '19:59':
-        channel = client.get_channel(GRABLUE_CHANNEL_ID)
-        await channel.send('団サポ発動するポメ!')
-        print(now)
-    elif now == '21:00':
-        # 「今日の相手に勝ちに行くポメ?」のリアクションによって発言を変えたい
-        channel = client.get_channel(PUBLICIZE_CHANNEL_ID)
-        await channel.send('アンケートの結果を見るポメ！')
-        print(now)
+    string_start_at = schedule[48]['start_at']
+    string_end_at = schedule[48]['end_at']
+    start_at = datetime.strptime(string_start_at, '%Y/%m/%d %z')
+    end_at = datetime.strptime(string_end_at, '%Y/%m/%d %z')
+
+    if start_at <= now <= end_at:
+        now_time = now.strftime('%H:%M')
+        if now_time == '00:00':
+            channel = client.get_channel(GRABLUE_CHANNEL_ID)
+            await channel.send('お疲れ様だポメ！')
+        elif now_time == '19:59':
+            channel = client.get_channel(GRABLUE_CHANNEL_ID)
+            await channel.send('団サポ発動するポメ!')
+        # 本戦
+        if start_at + timedelta(days=3) <= now:
+            if now_time == '07:00':
+                channel = client.get_channel(PUBLICIZE_CHANNEL_ID)
+                target_message = await channel.send('今日の相手に勝ちに行くポメ?')
+                await target_message.add_reaction('👍')
+                await target_message.add_reaction('👎')
+            elif nonow_timew == '21:00':
+                # 「今日の相手に勝ちに行くポメ?」のリアクションによって発言を変えたい
+                channel = client.get_channel(PUBLICIZE_CHANNEL_ID)
+                await channel.send('アンケートの結果を見るポメ！')
 loop.start()
-'''
-client.run(TOKEN)
+
+client.run(DISCORD_TOKEN)
