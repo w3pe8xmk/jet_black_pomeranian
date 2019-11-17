@@ -20,6 +20,7 @@ PUBLICIZE_CHANNEL_ID = os.environ['PUBLICIZE_CHANNEL_ID']  # 連絡用チャン�
 
 client = discord.Client()
 
+JST = timezone(timedelta(hours=+9), 'JST')
 
 @client.event
 async def on_ready():
@@ -68,8 +69,10 @@ async def on_message(message):
 # とりあえず48回古戦場だけ対応、汎用的にしたい
 @tasks.loop(seconds=60)
 async def loop():
-    JST = timezone(timedelta(hours=+9), 'JST')
-    # now = datetime.now(JST).strftime('%Y/%m/%d %H:%M')
+    # 毎回変数に入れているからインスタンス変数か外に出したい
+    grablue_channel = client.get_channel(GRABLUE_CHANNEL_ID)
+    publicize_channel = client.get_channel(PUBLICIZE_CHANNEL_ID)
+
     now = datetime.now(JST)
 
     string_start_at = schedule[48]['start_at']
@@ -77,32 +80,35 @@ async def loop():
     start_at = datetime.strptime(string_start_at, '%Y/%m/%d %z')
     end_at = datetime.strptime(string_end_at, '%Y/%m/%d %z')
 
+    # 古戦場三日前
     if start_at - timedelta(days=3) == now:
         await grablue_channel.send('古戦場3日前だポメ、シート未記入なら記入するポメ！')
+    # 古戦場期間中
     if start_at <= now < end_at:
+        now_time = now.strftime('%H:%M')
+        # 予選開始時
         if start_at + timedelta(hours=19) == now:
             await grablue_channel.send('古戦場予選開始だポメ。応援するポメ！')
-        now_time = now.strftime('%H:%M')
-        grablue_channel = client.get_channel(GRABLUE_CHANNEL_ID)
+        # 古戦場、毎日
         if now_time == '00:00':
             await grablue_channel.send('お疲れ様だポメ！')
         elif now_time == '19:59':
             await grablue_channel.send('団アビ発動するポメ!')
         elif now_time == '21:59':
             await grablue_channel.send('2回目の団アビ発動し忘れてないポメ？')
+        # 予選終了時
         if start_at + timedelta(days=2) == now:
             await grablue_channel.send('予選お疲れ様だポメ！明日はインターバルだポメ')
-        # 本戦
+        # 本戦時、毎日
         if start_at + timedelta(days=3) <= now:
             if now_time == '07:00':
-                channel = client.get_channel(PUBLICIZE_CHANNEL_ID)
-                target_message = await channel.send('今日の相手に勝ちに行くポメ?')
+                target_message = await publicize_channel.send('今日の相手に勝ちに行くポメ?')
                 await target_message.add_reaction('👍')
                 await target_message.add_reaction('👎')
             elif now_time == '21:00':
                 # 「今日の相手に勝ちに行くポメ?」のリアクションによって発言を変えたい
                 channel = client.get_channel(PUBLICIZE_CHANNEL_ID)
-                await channel.send('アンケートの結果を見るポメ！')
+                await publicize_channel.send('アンケートの結果を見るポメ！')
     if end_at == now:
         await grablue_channel.send('本戦お疲れ様だポメ！明日はスペシャルバトルだポメ')
 loop.start()
