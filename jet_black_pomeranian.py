@@ -20,6 +20,7 @@ PUBLICIZE_CHANNEL_ID = os.environ['PUBLICIZE_CHANNEL_ID']  # 連絡用チャン�
 
 client = discord.Client()
 
+
 @client.event
 async def on_ready():
     print('ログインしました')
@@ -76,14 +77,21 @@ async def loop():
     start_at = datetime.strptime(string_start_at, '%Y/%m/%d %z')
     end_at = datetime.strptime(string_end_at, '%Y/%m/%d %z')
 
-    if start_at <= now <= end_at:
+    if start_at - timedelta(days=3) == now:
+        await grablue_channel.send('古戦場3日前だポメ、シート未記入なら記入するポメ！')
+    if start_at <= now < end_at:
+        if start_at + timedelta(hours=19) == now:
+            await grablue_channel.send('古戦場予選開始だポメ。応援するポメ！')
         now_time = now.strftime('%H:%M')
+        grablue_channel = client.get_channel(GRABLUE_CHANNEL_ID)
         if now_time == '00:00':
-            channel = client.get_channel(GRABLUE_CHANNEL_ID)
-            await channel.send('お疲れ様だポメ！')
+            await grablue_channel.send('お疲れ様だポメ！')
         elif now_time == '19:59':
-            channel = client.get_channel(GRABLUE_CHANNEL_ID)
-            await channel.send('団サポ発動するポメ!')
+            await grablue_channel.send('団アビ発動するポメ!')
+        elif now_time == '21:59':
+            await grablue_channel.send('2回目の団アビ発動し忘れてないポメ？')
+        if start_at + timedelta(days=2) == now:
+            await grablue_channel.send('予選お疲れ様だポメ！明日はインターバルだポメ')
         # 本戦
         if start_at + timedelta(days=3) <= now:
             if now_time == '07:00':
@@ -91,10 +99,12 @@ async def loop():
                 target_message = await channel.send('今日の相手に勝ちに行くポメ?')
                 await target_message.add_reaction('👍')
                 await target_message.add_reaction('👎')
-            elif nonow_timew == '21:00':
+            elif now_time == '21:00':
                 # 「今日の相手に勝ちに行くポメ?」のリアクションによって発言を変えたい
                 channel = client.get_channel(PUBLICIZE_CHANNEL_ID)
                 await channel.send('アンケートの結果を見るポメ！')
+    if end_at == now:
+        await grablue_channel.send('本戦お疲れ様だポメ！明日はスペシャルバトルだポメ')
 loop.start()
 
 client.run(DISCORD_TOKEN)
