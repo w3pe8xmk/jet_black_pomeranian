@@ -70,8 +70,8 @@ async def on_message(message):
 @tasks.loop(seconds=60)
 async def loop():
     # 毎回変数に入れているからインスタンス変数か外に出したい
-    grablue_channel = client.get_channel(GRABLUE_CHANNEL_ID)
-    publicize_channel = client.get_channel(PUBLICIZE_CHANNEL_ID)
+    grablue_channel = client.get_channel(int(GRABLUE_CHANNEL_ID))
+    publicize_channel = client.get_channel(int(PUBLICIZE_CHANNEL_ID))
 
     now = datetime.now(JST)
 
