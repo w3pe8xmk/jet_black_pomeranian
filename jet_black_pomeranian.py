@@ -17,6 +17,7 @@ TSUCHINASHI_CHANNEL_ID = os.environ['TSUCHINASHI_CHANNEL_ID']  # 通知なしチ
 GRABLUE_CHANNEL_ID = os.environ['GRABLUE_CHANNEL_ID']  # グラブルチャンネル
 HUKUDANCHO_CHANNEL_ID = os.environ['HUKUDANCHO_CHANNEL_ID']  # 副団長とかチャンネル
 PUBLICIZE_CHANNEL_ID = os.environ['PUBLICIZE_CHANNEL_ID']  # 連絡用チャンネル
+RECRUITMENT_CHANNEL_ID = os.environ['RECRUITMENT_CHANNEL_ID']  # マルチ募集チャンネル
 
 client = discord.Client()
 
@@ -55,28 +56,23 @@ async def on_message(message):
             await message.channel.send('オメガユニットしか落ちなかったポメ')
     # 「ルシ募集」に反応する
     elif message.content == 'ルシ募集':
-        target_message = await message.channel.send('ダークラプチャー(HARD)の募集だポメ!\nできる属性(複数可)のリアクションをするポメ')
-        emoji_list = client.emojis
-        # もっといい書き方あるかも
-        for data in emoji_list:
-            element_list = ['fire', 'water', 'earth', 'wind', 'light', 'dark']
-            if data.name in element_list:
-                await target_message.add_reaction(str(data))
+        await lucifer(message.channel)
 
 # こうゆうのファイル分けたほうが良さそう?
 # 定期発言(60秒に一回ループ)
 # このやり方よくない、時間になったら実行されるようにしたい
-# とりあえず48回古戦場だけ対応、汎用的にしたい
 @tasks.loop(seconds=60)
 async def loop():
     # 毎回変数に入れているからインスタンス変数か外に出したい
     grablue_channel = client.get_channel(int(GRABLUE_CHANNEL_ID))
     publicize_channel = client.get_channel(int(PUBLICIZE_CHANNEL_ID))
+    recruitment_channel = client.get_channel(int(RECRUITMENT_CHANNEL_ID))
 
     now = datetime.now(JST)
 
-    string_start_at = schedule[48]['start_at']
-    string_end_at = schedule[48]['end_at']
+    # とりあえず49回古戦場だけ対応、汎用的にしたい
+    string_start_at = schedule[49]['start_at']
+    string_end_at = schedule[49]['end_at']
     start_at = datetime.strptime(string_start_at, '%Y/%m/%d %z')
     end_at = datetime.strptime(string_end_at, '%Y/%m/%d %z')
 
@@ -84,8 +80,9 @@ async def loop():
     if start_at - timedelta(days=3) == now:
         await grablue_channel.send('古戦場3日前だポメ、シート未記入なら記入するポメ！')
     # 古戦場期間中
+
+    now_time = now.strftime('%H:%M')
     if start_at <= now < end_at:
-        now_time = now.strftime('%H:%M')
         # 予選開始時
         if start_at + timedelta(hours=19) == now:
             await grablue_channel.send('古戦場予選開始だポメ。応援するポメ！')
@@ -102,15 +99,38 @@ async def loop():
         # 本戦時、毎日
         if start_at + timedelta(days=3) <= now:
             if now_time == '07:00':
-                target_message = await publicize_channel.send('今日の相手に勝ちに行くポメ?')
+                target_message = await publicize_channel.send('今日の相手に勝ちに行くポメ? 😷は放棄の意味だポメ')
                 await target_message.add_reaction('👍')
                 await target_message.add_reaction('👎')
-            elif now_time == '21:00':
+                await target_message.add_reaction('😷')
+            elif now_time == '12:00':
                 # 「今日の相手に勝ちに行くポメ?」のリアクションによって発言を変えたい
                 channel = client.get_channel(PUBLICIZE_CHANNEL_ID)
-                await publicize_channel.send('アンケートの結果を見るポメ！')
-    if end_at == now:
+                await publicize_channel.send('アンケートの結果を見るポメ！15人以上👍なら勝ちにいくポメ！')
+    elif end_at == now:
         await grablue_channel.send('本戦お疲れ様だポメ！明日はスペシャルバトルだポメ')
+    # 定期
+    elif now_time == '12:00':
+        # ルシ定期
+        if now.weekday() == 5:
+            await lucifer(recruitment_channel)
+        # アアルバハ
+        else:
+            target_message = await recruitment_channel.send("アルバハHLの募集だポメ！\n参加する人はリアクションをするポメ\n要望がなければ22時開始だポメ")
+            emoji_list = client.emojis
+            # もっといい書き方あるかも、共通化する
+            for data in emoji_list:
+                element_list = ['hai']
+                if data.name in element_list:
+                    await target_message.add_reaction(str(data))
 loop.start()
+
+async def lucifer(channel):
+    target_message = await channel.send('ダークラプチャー(HARD)の募集だポメ!\nできる属性(複数可)のリアクションをするポメ\n要望がなければ21時開始だポメ')
+    emoji_list = client.emojis
+    for data in emoji_list:
+        element_list = ['fire', 'water', 'earth', 'wind', 'light', 'dark']
+        if data.name in element_list:
+            await target_message.add_reaction(str(data))
 
 client.run(DISCORD_TOKEN)
