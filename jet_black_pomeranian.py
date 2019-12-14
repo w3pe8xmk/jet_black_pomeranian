@@ -111,12 +111,12 @@ async def loop():
         await grablue_channel.send('本戦お疲れ様だポメ！明日はスペシャルバトルだポメ')
     # 定期
     elif now_time == '12:00':
-        # ルシ定期
+        # ルシHard
         if now.weekday() == 5:
             await lucifer(recruitment_channel)
-        # アアルバハ
+        # アルバハHL
         else:
-            target_message = await recruitment_channel.send("アルバハHLの募集だポメ！\n参加する人はリアクションをするポメ\n要望がなければ22時開始だポメ")
+            target_message = await recruitment_channel.send("アルバハHLの募集だポメ！\n参加する人はリアクションをするポメ\n要望がなければ23時開始だポメ")
             emoji_list = client.emojis
             # もっといい書き方あるかも、共通化する
             for data in emoji_list:
