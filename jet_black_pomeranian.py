@@ -10,14 +10,14 @@ import yaml
 f = open('unite_and_fight_schedule.yml', 'r+')
 schedule = yaml.load(f, Loader=yaml.SafeLoader)
 
-DISCORD_TOKEN = os.environ['DISCORD_TOKEN']   # 自分の Bot のアクセストークン
-POMERANIAN_ID = os.environ['POMERANIAN_ID']  # ポメラニアンのユーザーID
+DISCORD_TOKEN = os.environ['DISCORD_TOKEN'] # 自分の Bot のアクセストークン
+POMERANIAN_ID = os.environ['POMERANIAN_ID'] # ポメラニアンのユーザーID
 
-TSUCHINASHI_CHANNEL_ID = os.environ['TSUCHINASHI_CHANNEL_ID']  # 通知なしチャンネル
-GRABLUE_CHANNEL_ID = os.environ['GRABLUE_CHANNEL_ID']  # グラブルチャンネル
-HUKUDANCHO_CHANNEL_ID = os.environ['HUKUDANCHO_CHANNEL_ID']  # 副団長とかチャンネル
-PUBLICIZE_CHANNEL_ID = os.environ['PUBLICIZE_CHANNEL_ID']  # 連絡用チャンネル
-RECRUITMENT_CHANNEL_ID = os.environ['RECRUITMENT_CHANNEL_ID']  # マルチ募集チャンネル
+TSUCHINASHI_CHANNEL_ID = os.environ['TSUCHINASHI_CHANNEL_ID'] # 通知なしチャンネル
+GRABLUE_CHANNEL_ID = os.environ['GRABLUE_CHANNEL_ID'] # グラブルチャンネル
+HUKUDANCHO_CHANNEL_ID = os.environ['HUKUDANCHO_CHANNEL_ID'] # 副団長とかチャンネル
+PUBLICIZE_CHANNEL_ID = os.environ['PUBLICIZE_CHANNEL_ID'] # 連絡用チャンネル
+RECRUITMENT_CHANNEL_ID = os.environ['RECRUITMENT_CHANNEL_ID'] # マルチ募集チャンネル
 
 client = discord.Client()
 
@@ -28,7 +28,7 @@ async def on_ready():
     print('ログインしました')
 
 # メッセージ受信時に動作する処理
-# 現在受け取ったメッセージを elif で繋がって、新しいのを入れようとしたらどんどん下に増えていくので新しい関数とかでうまいこと処理されるようにしたい
+# TODO: 現在受け取ったメッセージを elif で繋がって、新しいのを入れようとしたらどんどん下に増えていくので新しい関数とかでうまいこと処理されるようにしたい
 @client.event
 async def on_message(message):
     mentions = [x.id for x in message.mentions]
@@ -58,34 +58,34 @@ async def on_message(message):
     elif message.content == 'ルシ募集':
         await lucifer(message.channel)
 
-# こうゆうのファイル分けたほうが良さそう?
+# TODO: こうゆうのファイル分けたほうが良さそう?
 # 定期発言(60秒に一回ループ)
-# このやり方よくない、時間になったら実行されるようにしたい
+# TODO: このやり方よくない、時間になったら実行されるようにしたい
 @tasks.loop(seconds=60)
 async def loop():
-    # 毎回変数に入れているからインスタンス変数か外に出したい
+    # TODO: 毎回変数に入れているからインスタンス変数か外に出したい
     grablue_channel = client.get_channel(int(GRABLUE_CHANNEL_ID))
     publicize_channel = client.get_channel(int(PUBLICIZE_CHANNEL_ID))
     recruitment_channel = client.get_channel(int(RECRUITMENT_CHANNEL_ID))
 
     now = datetime.now(JST)
 
-    # とりあえず49回古戦場だけ対応、汎用的にしたい
+    # TODO: とりあえず49回古戦場だけ対応、汎用的にしたい
     string_start_at = schedule[49]['start_at']
     string_end_at = schedule[49]['end_at']
     start_at = datetime.strptime(string_start_at, '%Y/%m/%d %z')
     end_at = datetime.strptime(string_end_at, '%Y/%m/%d %z')
 
+    # FIXME: 古戦場三日前動いていないっぽい
     # 古戦場三日前
     if start_at - timedelta(days=3) == now:
         await grablue_channel.send('古戦場3日前だポメ、シート未記入なら記入するポメ！')
     # 古戦場期間中
-
     now_time = now.strftime('%H:%M')
     if start_at <= now < end_at:
         # 予選開始時
         if start_at + timedelta(hours=19) == now:
-            await grablue_channel.send('古戦場予選開始だポメ。応援するポメ！')
+            await grablue_channel.send('古戦場予選開始だポメ。応援してるポメ！')
         # 古戦場、毎日
         if now_time == '00:00':
             await grablue_channel.send('お疲れ様だポメ！')
@@ -107,9 +107,10 @@ async def loop():
                 # 「今日の相手に勝ちに行くポメ?」のリアクションによって発言を変えたい
                 channel = client.get_channel(PUBLICIZE_CHANNEL_ID)
                 await publicize_channel.send('アンケートの結果を見るポメ！15人以上👍なら勝ちにいくポメ！')
+    # 古戦場最終日
     elif end_at == now:
         await grablue_channel.send('本戦お疲れ様だポメ！明日はスペシャルバトルだポメ')
-    # 定期
+    # 古戦場期間外の定期
     elif now_time == '12:00':
         # ルシHard
         if now.weekday() == 5:
@@ -118,7 +119,7 @@ async def loop():
         else:
             target_message = await recruitment_channel.send("アルバハHLの募集だポメ！\n参加する人はリアクションをするポメ\n要望がなければ23時開始だポメ")
             emoji_list = client.emojis
-            # もっといい書き方あるかも、共通化する
+            # TODO: もっといい書き方あるかも、共通化する
             for data in emoji_list:
                 element_list = ['hai']
                 if data.name in element_list:
