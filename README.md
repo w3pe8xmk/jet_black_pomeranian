@@ -1,16 +1,25 @@
-# 概要
-ポメラニアンbot
-- 「ルシ募集」と言えば、テンプレートを置いてくれる
+# jet_black_pomeranian
+漆黒のポメラニアン団でお世話をしている犬。  
+![](./doc/img/pome.png)
+
+# 機能
 - 古戦場時、色々言ってくれる
 - 「ヒヒイロチャレンジ」と言えば、ヒヒイロチャレンジができる
+- 「ルシ募集」と言えば、テンプレートを置いてくれる
+- 土曜以外毎日アルバハHLの募集を投げてくれる
+- 土曜にルシHARDの募集を投げてくれる
 
 # 実行方法
-各環境変数を設定する
 以下のコマンドで実行
 ```
 pip install pyyaml
 python3 jet_black_pomeranian.py
 ```
+
+# 利用方法
+heroku の Dyno を利用する  
+各環境変数を設定する  
+ex. `heroku config:set DISCORD_TOKEN=your_token`
 
 # TODO
 - Docker化(環境変数のため)
