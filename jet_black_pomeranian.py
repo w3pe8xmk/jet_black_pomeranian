@@ -10,20 +10,21 @@ import yaml
 f = open('unite_and_fight_schedule.yml', 'r+')
 schedule = yaml.load(f, Loader=yaml.SafeLoader)
 
-DISCORD_TOKEN = os.environ['DISCORD_TOKEN'] # 自分の Bot のアクセストークン
-POMERANIAN_ID = os.environ['POMERANIAN_ID'] # ポメラニアンのユーザーID
+DISCORD_TOKEN = os.environ['DISCORD_TOKEN']  # 自分の Bot のアクセストークン
+POMERANIAN_ID = os.environ['POMERANIAN_ID']  # ポメラニアンのユーザーID
 
-TSUCHINASHI_CHANNEL_ID = os.environ['TSUCHINASHI_CHANNEL_ID'] # 通知なしチャンネル
-GRABLUE_CHANNEL_ID = os.environ['GRABLUE_CHANNEL_ID'] # グラブルチャンネル
-HUKUDANCHO_CHANNEL_ID = os.environ['HUKUDANCHO_CHANNEL_ID'] # 副団長とかチャンネル
-PUBLICIZE_CHANNEL_ID = os.environ['PUBLICIZE_CHANNEL_ID'] # 連絡用チャンネル
-RECRUITMENT_CHANNEL_ID = os.environ['RECRUITMENT_CHANNEL_ID'] # マルチ募集チャンネル
+TSUCHINASHI_CHANNEL_ID = os.environ['TSUCHINASHI_CHANNEL_ID']  # 通知なしチャンネル
+GRABLUE_CHANNEL_ID = os.environ['GRABLUE_CHANNEL_ID']  # グラブルチャンネル
+HUKUDANCHO_CHANNEL_ID = os.environ['HUKUDANCHO_CHANNEL_ID']  # 副団長とかチャンネル
+PUBLICIZE_CHANNEL_ID = os.environ['PUBLICIZE_CHANNEL_ID']  # 連絡用チャンネル
+RECRUITMENT_CHANNEL_ID = os.environ['RECRUITMENT_CHANNEL_ID']  # マルチ募集チャンネル
 
-GSPREAD_URL = os.environ['GSPREAD_URL'] # スプレッドシートのURL
+GSPREAD_URL = os.environ['GSPREAD_URL']  # スプレッドシートのURL
 
 client = discord.Client()
 
 JST = timezone(timedelta(hours=+9), 'JST')
+
 
 @client.event
 async def on_ready():
@@ -118,7 +119,7 @@ async def loop():
             await lucifer(recruitment_channel)
         # アルバハHL
         else:
-            target_message = await recruitment_channel.send('アルバハHLの募集だポメ！\n参加したい人はリアクションをするポメ\n要望がなければ23時開始だポメ')
+            target_message = await recruitment_channel.send('アルバハHLの募集だポメ！\nリアクションした人から優先だポメ\n要望がなければ23時開始だポメ\n2部やる場合は別のリアクションをするポメ')
             emoji_list = client.emojis
             # TODO: もっといい書き方あるかも、共通化する
             for data in emoji_list:
@@ -126,6 +127,7 @@ async def loop():
                 if data.name in element_list:
                     await target_message.add_reaction(str(data))
 loop.start()
+
 
 async def lucifer(channel):
     target_message = await channel.send('ダークラプチャー(HARD)の募集だポメ!\nできる属性(複数可)のリアクションをするポメ\n要望がなければ21時開始だポメ')
