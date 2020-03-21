@@ -114,18 +114,16 @@ async def loop():
         await grablue_channel.send('本戦お疲れ様だポメ！明日はスペシャルバトルだポメ')
     # 古戦場期間外の定期
     elif now_time_str == '12:00':
-        # ルシHard
+        # ルシHard、土曜日のみ
+        # TODO: マジックナンバーを避ける
         if now.weekday() == 5:
             await lucifer(recruitment_channel)
         # アルバハHL
-        else:
-            target_message = await recruitment_channel.send('アルバハHLの募集だポメ！\nリアクションした人から優先だポメ\n要望がなければ23時開始だポメ\n2部やる場合は別のリアクションをするポメ')
-            emoji_list = client.emojis
-            # TODO: もっといい書き方あるかも、共通化する
-            for data in emoji_list:
-                element_list = ['hai']
-                if data.name in element_list:
-                    await target_message.add_reaction(str(data))
+        al_target_message = await recruitment_channel.send('アルバハHLの募集だポメ！\nリアクションした人から優先だポメ\n要望がなければ23時開始だポメ\n2部やる場合は別のリアクションをするポメ')
+        await add_hai_reaction(al_target_message)
+        # つよバハ
+        tuyo_target_message = await recruitment_channel.send('つよバハの募集だポメ！\nアルバハHL終了後開始だポメ\n1部屋6人で自発者はサポでやるポメ\n2部やる場合は別のリアクションをするポメ')
+        await add_hai_reaction(tuyo_target_message)
 loop.start()
 
 
@@ -136,5 +134,14 @@ async def lucifer(channel):
         element_list = ['fire', 'water', 'earth', 'wind', 'light', 'dark']
         if data.name in element_list:
             await target_message.add_reaction(str(data))
+
+
+async def add_hai_reaction(message):
+    # TODO: もっといい書き方あるかも
+    emoji_list = client.emojis
+    for data in emoji_list:
+        element_list = ['hai']
+        if data.name in element_list:
+            await message.add_reaction(str(data))
 
 client.run(DISCORD_TOKEN)
