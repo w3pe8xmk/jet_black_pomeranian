@@ -119,7 +119,7 @@ async def loop():
         if now.weekday() == 5:
             await lucifer(recruitment_channel)
         # アルバハHL
-        al_target_message = await recruitment_channel.send('アルバハHLの募集だポメ！\nリアクションした人から優先だポメ\n要望がなければ23時開始だポメ\n2部やる場合は別のリアクションをするポメ')
+        al_target_message = await recruitment_channel.send('アルバハHLの募集だポメ！\nリアクションした人から優先だポメ\n要望がなければ22時開始だポメ\n2部やる場合は別のリアクションをするポメ')
         await add_hai_reaction(al_target_message)
         # つよバハ
         tuyo_target_message = await recruitment_channel.send('つよバハの募集だポメ！\nアルバハHL終了後開始だポメ\n1部屋6人で自発者はサポでやるポメ\n2部やる場合は別のリアクションをするポメ')
@@ -135,7 +135,7 @@ async def lucifer(channel):
         if data.name in element_list:
             await target_message.add_reaction(str(data))
 
-
+# ルシファーの方でも同じことしているからadd_reaction(message, stamp_names) みたいな感じに変えたい
 async def add_hai_reaction(message):
     # TODO: もっといい書き方あるかも
     emoji_list = client.emojis
