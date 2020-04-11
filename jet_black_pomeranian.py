@@ -50,10 +50,10 @@ async def on_message(message):
             await message.channel.send('ワン！')
     # 「ヒヒイロチャレンジ」に反応する
     elif 'ヒヒイロチャレンジ' in message.content:
-        rand = random.randint(1, 1000)
+        rand = random.randint(1, 100)
         if rand <= 3:
             await message.channel.send('ヒヒイロカネが落ちたポメ！')
-        elif rand >= 900:
+        elif rand >= 90:
             await message.channel.send('破局を受けたポメ！')
         else:
             await message.channel.send('オメガユニットしか落ちなかったポメ')
@@ -73,9 +73,9 @@ async def loop():
 
     now = datetime.now(JST).replace(second=0, microsecond=0)
 
-    # TODO: とりあえず50回古戦場だけ対応、汎用的にしたい
-    start_at_str = schedule[50]['start_at']
-    end_at_str = schedule[50]['end_at']
+    # TODO: とりあえず51回古戦場だけ対応、汎用的にしたい
+    start_at_str = schedule[51]['start_at']
+    end_at_str = schedule[51]['end_at']
     start_at = datetime.strptime(start_at_str, '%Y/%m/%d %z')
     end_at = datetime.strptime(end_at_str, '%Y/%m/%d %z')
 
@@ -128,11 +128,11 @@ loop.start()
 
 
 async def lucifer(channel):
-    target_message = await channel.send('ダークラプチャー(HARD)の募集だポメ!\nできる属性(複数可)のリアクションをするポメ\n要望がなければ21時開始だポメ')
+    target_message = await channel.send('ダークラプチャー(HARD)の募集だポメ!\nやりたい属性にリアクションをするポメ\nやりたい人いれば手伝うくらいの人は別のリアクション押すポメ！\n要望がなければ21時開始だポメ')
     emoji_list = client.emojis
     for data in emoji_list:
-        element_list = ['fire', 'water', 'earth', 'wind', 'light', 'dark']
-        if data.name in element_list:
+        reaction_list = ['fire', 'water', 'earth', 'wind', 'light', 'dark', 'narumea']
+        if data.name in reaction_list:
             await target_message.add_reaction(str(data))
 
 # ルシファーの方でも同じことしているからadd_reaction(message, stamp_names) みたいな感じに変えたい
@@ -140,8 +140,8 @@ async def add_hai_reaction(message):
     # TODO: もっといい書き方あるかも
     emoji_list = client.emojis
     for data in emoji_list:
-        element_list = ['hai']
-        if data.name in element_list:
+        reaction_list = ['hai']
+        if data.name in reaction_list:
             await message.add_reaction(str(data))
 
 client.run(DISCORD_TOKEN)
