@@ -73,9 +73,9 @@ async def loop():
 
     now = datetime.now(JST).replace(second=0, microsecond=0)
 
-    # TODO: とりあえず51回古戦場だけ対応、汎用的にしたい
-    start_at_str = schedule[51]['start_at']
-    end_at_str = schedule[51]['end_at']
+    # TODO: とりあえず52回古戦場だけ対応、汎用的にしたい
+    start_at_str = schedule[52]['start_at']
+    end_at_str = schedule[52]['end_at']
     start_at = datetime.strptime(start_at_str, '%Y/%m/%d %z')
     end_at = datetime.strptime(end_at_str, '%Y/%m/%d %z')
 
@@ -84,7 +84,7 @@ async def loop():
         await grablue_channel.send('古戦場3日前だポメ、次回古戦場シートに一言と目標を記入するポメ！\n' + GSPREAD_URL)
     # 古戦場期間中
     now_time_str = now.strftime('%H:%M')
-    if start_at <= now < end_at:
+    if start_at < now < end_at:
         # 予選開始時
         if start_at + timedelta(hours=19) == now:
             await grablue_channel.send('古戦場予選開始ポメ。応援してるポメ！')
@@ -104,7 +104,7 @@ async def loop():
         # 本戦時、毎日
         if start_at + timedelta(days=3) <= now:
             if now_time_str == '07:00':
-                target_message = await publicize_channel.send('今日の相手に勝ちに行くかと、現在の肉の個数をシートに記入するポメ!\n' + GSPREAD_URL + '\n14時時点で15人以上「勝ちに行く」なら勝ちにいく方針になるポメ')
+                target_message = await publicize_channel.send('今日の相手に勝ちに行くかと、現在の肉の個数をシートに記入するポメ!\n' + GSPREAD_URL + '\n14時時点で15人以上「勝ちに行く」なら勝ちにいく方針になるポメ\n忙しくて走れないと分かってる日は事前にその日を△にしとくといいポメ')
             elif now_time_str == '14:00':
                 # シートのAPIで勝ちに行くの個数を取得してその結果によって発言を変えたい
                 channel = client.get_channel(PUBLICIZE_CHANNEL_ID)
@@ -122,7 +122,7 @@ async def loop():
         al_target_message = await recruitment_channel.send('アルバハHLの募集だポメ！\nリアクションした人から優先だポメ\n要望がなければ22時開始だポメ\n2部やる場合は別のリアクションをするポメ')
         await add_hai_reaction(al_target_message)
         # つよバハ
-        tuyo_target_message = await recruitment_channel.send('つよバハの募集だポメ！\nアルバハHL終了後開始だポメ\n1部屋6人で自発者はサポでやるポメ\n2部やる場合は別のリアクションをするポメ')
+        tuyo_target_message = await recruitment_channel.send('つよバハの募集だポメ！\nアルバハHL終了後開始だポメ\n1部屋5~6人集まったら実施で自発者はサポでやるポメ\n2部やる場合は別のリアクションをするポメ')
         await add_hai_reaction(tuyo_target_message)
 loop.start()
 
