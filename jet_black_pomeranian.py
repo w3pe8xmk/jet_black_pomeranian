@@ -150,7 +150,7 @@ async def lucifer(channel):
             'wind',
             'light',
             'dark',
-            'narumea
+            'narumea'
         ]
         if data.name in reaction_list:
             await target_message.add_reaction(str(data))
