@@ -71,7 +71,7 @@ async def on_message(message):
         await tuyo(message.channel)
     # 「バブ募集」に反応する
     elif message.content == 'バブ募集':
-        await tuyo(message.channel)
+        await beelzebub(message.channel)
 
 # TODO: このやり方よくない、時間になったら実行されるようにしたい
 @tasks.loop(seconds=60)
