@@ -1,38 +1,43 @@
 # coding: UTF-8
-from datetime import datetime, timedelta, timezone
-from discord.ext import tasks
-import discord
-import random
 import os
+import random
 import subprocess
+from datetime import datetime, timedelta, timezone
+
+import discord
 import yaml
+from discord.ext import tasks
 
-f = open('unite_and_fight_schedule.yml', 'r+')
-schedule = yaml.load(f, Loader=yaml.SafeLoader)
+schedule_file = open('unite_and_fight_schedule.yml', 'r+')
+schedule = yaml.load(schedule_file, Loader=yaml.SafeLoader)
+# 自分の Bot のアクセストークン
+DISCORD_TOKEN = os.environ['DISCORD_TOKEN']
+# ポメラニアンのユーザーID
+POMERANIAN_ID = os.environ['POMERANIAN_ID']
+# 通知なしチャンネル
+TSUCHINASHI_CHANNEL_ID = os.environ['TSUCHINASHI_CHANNEL_ID']
+# グラブルチャンネル
+GRABLUE_CHANNEL_ID = os.environ['GRABLUE_CHANNEL_ID']
+# 副団長とかチャンネル
+HUKUDANCHO_CHANNEL_ID = os.environ['HUKUDANCHO_CHANNEL_ID']
+# 連絡用チャンネル
+PUBLICIZE_CHANNEL_ID = os.environ['PUBLICIZE_CHANNEL_ID']
+# マルチ募集チャンネル
+RECRUITMENT_CHANNEL_ID = os.environ['RECRUITMENT_CHANNEL_ID']
+# スプレッドシートのURL
+GSPREAD_URL = os.environ['GSPREAD_URL']
 
-DISCORD_TOKEN = os.environ['DISCORD_TOKEN']  # 自分の Bot のアクセストークン
-POMERANIAN_ID = os.environ['POMERANIAN_ID']  # ポメラニアンのユーザーID
-
-TSUCHINASHI_CHANNEL_ID = os.environ['TSUCHINASHI_CHANNEL_ID']  # 通知なしチャンネル
-GRABLUE_CHANNEL_ID = os.environ['GRABLUE_CHANNEL_ID']  # グラブルチャンネル
-HUKUDANCHO_CHANNEL_ID = os.environ['HUKUDANCHO_CHANNEL_ID']  # 副団長とかチャンネル
-PUBLICIZE_CHANNEL_ID = os.environ['PUBLICIZE_CHANNEL_ID']  # 連絡用チャンネル
-RECRUITMENT_CHANNEL_ID = os.environ['RECRUITMENT_CHANNEL_ID']  # マルチ募集チャンネル
-
-GSPREAD_URL = os.environ['GSPREAD_URL']  # スプレッドシートのURL
-
-client = discord.Client()
-
+CLIENT = discord.Client()
 JST = timezone(timedelta(hours=+9), 'JST')
 
 
-@client.event
+@CLIENT.event
 async def on_ready():
     print('ログインしました')
 
 # メッセージ受信時に動作する処理
-# TODO: 現在受け取ったメッセージを elif で繋がって、新しいのを入れようとしたらどんどん下に増えていくので新しい関数とかでうまいこと処理されるようにしたい
-@client.event
+# TODO: クラスに分ける
+@CLIENT.event
 async def on_message(message):
     mentions = [x.id for x in message.mentions]
     if message.author.bot:
@@ -61,21 +66,20 @@ async def on_message(message):
     elif message.content == 'ルシ募集':
         await lucifer(message.channel)
 
-# TODO: こうゆうのファイル分けたほうが良さそう?
 # 定期発言(60秒に一回ループ)
 # TODO: このやり方よくない、時間になったら実行されるようにしたい
 @tasks.loop(seconds=60)
 async def loop():
     # TODO: 毎回変数に入れているからインスタンス変数か外に出したい
-    grablue_channel = client.get_channel(int(GRABLUE_CHANNEL_ID))
-    publicize_channel = client.get_channel(int(PUBLICIZE_CHANNEL_ID))
-    recruitment_channel = client.get_channel(int(RECRUITMENT_CHANNEL_ID))
+    grablue_channel = CLIENT.get_channel(int(GRABLUE_CHANNEL_ID))
+    publicize_channel = CLIENT.get_channel(int(PUBLICIZE_CHANNEL_ID))
+    recruitment_channel = CLIENT.get_channel(int(RECRUITMENT_CHANNEL_ID))
 
     now = datetime.now(JST).replace(second=0, microsecond=0)
 
     # TODO: とりあえず53回古戦場だけ対応、汎用的にしたい
-    start_at_str = schedule[53]['start_at']
-    end_at_str = schedule[53]['end_at']
+    start_at_str = schedule[54]['start_at']
+    end_at_str = schedule[54]['end_at']
     start_at = datetime.strptime(start_at_str, '%Y/%m/%d %z')
     end_at = datetime.strptime(end_at_str, '%Y/%m/%d %z')
 
@@ -107,7 +111,7 @@ async def loop():
                 target_message = await publicize_channel.send('今日の相手に勝ちに行くかと、現在の肉の個数をシートに記入するポメ!\n' + GSPREAD_URL + '\n14時時点で15人以上「勝ちに行く」なら勝ちにいく方針になるポメ\n忙しくて走れないと分かってる日は事前にその日を△にしとくといいポメ')
             elif now_time_str == '14:00':
                 # シートのAPIで勝ちに行くの個数を取得してその結果によって発言を変えたい
-                channel = client.get_channel(PUBLICIZE_CHANNEL_ID)
+                channel = CLIENT.get_channel(PUBLICIZE_CHANNEL_ID)
                 await publicize_channel.send(GSPREAD_URL + '\nアンケートの結果を見るポメ！15人以上「勝ちに行く」なら勝ちにいくポメ！')
     # 古戦場最終日
     elif end_at == now:
@@ -129,19 +133,27 @@ loop.start()
 
 async def lucifer(channel):
     target_message = await channel.send('ダークラプチャー(HARD)の募集だポメ!\nやりたい属性にリアクションをするポメ\nやりたい人いれば手伝うくらいの人は別のリアクション押すポメ！\n要望がなければ21時開始だポメ')
-    emoji_list = client.emojis
+    emoji_list = CLIENT.emojis
     for data in emoji_list:
-        reaction_list = ['fire', 'water', 'earth', 'wind', 'light', 'dark', 'narumea']
+        reaction_list = [
+            'fire',
+            'water',
+            'earth',
+            'wind',
+            'light',
+            'dark',
+            'narumea
+        ]
         if data.name in reaction_list:
             await target_message.add_reaction(str(data))
 
-# ルシファーの方でも同じことしているからadd_reaction(message, stamp_names) みたいな感じに変えたい
+
+# TODO: ルシファーの方でも同じことしているからadd_reaction(message, stamp_names) みたいな感じに変えたい
 async def add_hai_reaction(message):
-    # TODO: もっといい書き方あるかも
-    emoji_list = client.emojis
+    emoji_list = CLIENT.emojis
     for data in emoji_list:
         reaction_list = ['hai']
         if data.name in reaction_list:
             await message.add_reaction(str(data))
 
-client.run(DISCORD_TOKEN)
+CLIENT.run(DISCORD_TOKEN)
