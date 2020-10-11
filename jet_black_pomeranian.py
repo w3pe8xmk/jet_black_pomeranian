@@ -35,10 +35,11 @@ JST = timezone(timedelta(hours=+9), 'JST')
 async def on_ready():
     print('ログインしました')
 
-# メッセージ受信時に動作する処理
 # TODO: クラスに分ける
 @CLIENT.event
 async def on_message(message):
+    """ メッセージ受信時に動作する処理
+    """
     mentions = [x.id for x in message.mentions]
     if message.author.bot:
         return
@@ -68,11 +69,15 @@ async def on_message(message):
     # 「つよ募集」に反応する
     elif message.content == 'つよ募集':
         await tuyo(message.channel)
+    # 「バブ募集」に反応する
+    elif message.content == 'バブ募集':
+        await tuyo(message.channel)
 
-# 定期発言(60秒に一回ループ)
 # TODO: このやり方よくない、時間になったら実行されるようにしたい
 @tasks.loop(seconds=60)
 async def loop():
+    """ 定期発言(60秒に一回ループ)
+    """
     # TODO: 毎回変数に入れているからインスタンス変数か外に出したい
     grablue_channel = CLIENT.get_channel(int(GRABLUE_CHANNEL_ID))
     publicize_channel = CLIENT.get_channel(int(PUBLICIZE_CHANNEL_ID))
@@ -156,6 +161,13 @@ async def tuyo(channel):
     """
     tuyo_target_message = await channel.send('つよバハの募集だポメ！\n1部屋6人で自発者はサポでやるポメ\n要望がなければ21時開始だポメ')
     await add_hai_reaction(tuyo_target_message)
+
+
+async def beelzebub(channel):
+    """ バブさんの募集をチャンネルに投げる
+    """
+    bub_target_message = await channel.send('バブさんの募集だポメ！\n要望がなければ21時開始だポメ')
+    await add_hai_reaction(bub_target_message)
 
 
 # TODO: ルシファーの方でも同じことしているからadd_reaction(message, stamp_names) みたいな感じに変えたい
