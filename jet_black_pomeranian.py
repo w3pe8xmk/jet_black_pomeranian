@@ -65,6 +65,9 @@ async def on_message(message):
     # 「ルシ募集」に反応する
     elif message.content == 'ルシ募集':
         await lucifer(message.channel)
+    # 「つよ募集」に反応する
+    elif message.content == 'つよ募集':
+        await tuyo(message.channel)
 
 # 定期発言(60秒に一回ループ)
 # TODO: このやり方よくない、時間になったら実行されるようにしたい
@@ -116,6 +119,7 @@ async def loop():
     # 古戦場最終日
     elif end_at == now:
         await grablue_channel.send('本戦お疲れ様だポメ！明日はスペシャルバトルだポメ')
+
     # 古戦場期間外の定期
     elif now_time_str == '12:00':
         # ルシHard、土曜日のみ
@@ -125,13 +129,12 @@ async def loop():
         # アルバハHL
         al_target_message = await recruitment_channel.send('アルバハHLの募集だポメ！\nリアクションした人から優先だポメ\n要望がなければ22時開始だポメ\n2部やる場合は別のリアクションをするポメ')
         await add_hai_reaction(al_target_message)
-        # つよバハ
-        tuyo_target_message = await recruitment_channel.send('つよバハの募集だポメ！\nアルバハHL終了後開始だポメ\n1部屋5~6人集まったら実施で自発者はサポでやるポメ\n2部やる場合は別のリアクションをするポメ')
-        await add_hai_reaction(tuyo_target_message)
 loop.start()
 
 
 async def lucifer(channel):
+    """ ルシファーの募集をチャンネルに投げる
+    """
     target_message = await channel.send('ダークラプチャー(HARD)の募集だポメ!\nやりたい属性にリアクションをするポメ\nやりたい人いれば手伝うくらいの人は別のリアクション押すポメ！\n要望がなければ21時開始だポメ')
     emoji_list = CLIENT.emojis
     for data in emoji_list:
@@ -146,6 +149,13 @@ async def lucifer(channel):
         ]
         if data.name in reaction_list:
             await target_message.add_reaction(str(data))
+
+
+async def tuyo(channel):
+    """ つよバハの募集をチャンネルに投げる
+    """
+    tuyo_target_message = await channel.send('つよバハの募集だポメ！\n1部屋6人で自発者はサポでやるポメ\n要望がなければ21時開始だポメ')
+    await add_hai_reaction(tuyo_target_message)
 
 
 # TODO: ルシファーの方でも同じことしているからadd_reaction(message, stamp_names) みたいな感じに変えたい
