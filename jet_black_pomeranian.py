@@ -86,8 +86,8 @@ async def loop():
     now = datetime.now(JST).replace(second=0, microsecond=0)
 
     # TODO: とりあえず53回古戦場だけ対応、汎用的にしたい
-    start_at_str = schedule[54]['start_at']
-    end_at_str = schedule[54]['end_at']
+    start_at_str = schedule[55]['start_at']
+    end_at_str = schedule[55]['end_at']
     start_at = datetime.strptime(start_at_str, '%Y/%m/%d %z')
     end_at = datetime.strptime(end_at_str, '%Y/%m/%d %z')
 
