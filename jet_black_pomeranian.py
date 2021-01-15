@@ -34,6 +34,7 @@ JST = timezone(timedelta(hours=+9), 'JST')
 @CLIENT.event
 async def on_ready():
     print('ログインしました')
+    loop.start()
 
 # TODO: クラスに分ける
 @CLIENT.event
@@ -85,7 +86,7 @@ async def loop():
 
     now = datetime.now(JST).replace(second=0, microsecond=0)
 
-    # TODO: とりあえず53回古戦場だけ対応、汎用的にしたい
+    # TODO: とりあえず55回古戦場だけ対応、汎用的にしたい
     start_at_str = schedule[55]['start_at']
     end_at_str = schedule[55]['end_at']
     start_at = datetime.strptime(start_at_str, '%Y/%m/%d %z')
@@ -134,7 +135,6 @@ async def loop():
         # アルバハHL
         al_target_message = await recruitment_channel.send('アルバハHLの募集だポメ！\nリアクションした人から優先だポメ\n要望がなければ22時開始だポメ\n2部やる場合は別のリアクションをするポメ')
         await add_hai_reaction(al_target_message)
-loop.start()
 
 
 async def lucifer(channel):
