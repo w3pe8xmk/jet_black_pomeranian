@@ -86,9 +86,10 @@ async def loop():
 
     now = datetime.now(JST).replace(second=0, microsecond=0)
 
-    # TODO: とりあえず55回古戦場だけ対応、汎用的にしたい
-    start_at_str = schedule[55]['start_at']
-    end_at_str = schedule[55]['end_at']
+    # 最後の古戦場の情報を取ってくる
+    max_schedule = max(schedule.items())[1]
+    start_at_str = max_schedule['start_at']
+    end_at_str = max_schedule['end_at']
     start_at = datetime.strptime(start_at_str, '%Y/%m/%d %z')
     end_at = datetime.strptime(end_at_str, '%Y/%m/%d %z')
 
@@ -101,10 +102,8 @@ async def loop():
         # 予選開始時
         if start_at + timedelta(hours=19) == now:
             await grablue_channel.send('古戦場予選開始ポメ。応援してるポメ！')
-        # 古戦場、毎日
-        if now_time_str == '00:00':
-            await grablue_channel.send('お疲れ様ポメ！')
-        elif now_time_str == '19:59':
+        # 毎日
+        if now_time_str == '19:59':
             await grablue_channel.send('団アビ発動するポメ!')
         elif now_time_str == '21:59':
             await grablue_channel.send('2回目の団アビ発動し忘れてないポメ？')
@@ -116,8 +115,10 @@ async def loop():
             await grablue_channel.send('7:00から本戦だポメ、明日に備えて寝るポメ！')
         # 本戦時、毎日
         if start_at + timedelta(days=3) <= now:
-            if now_time_str == '07:00':
-                target_message = await publicize_channel.send('今日の相手に勝ちに行くかと、現在の肉の個数をシートに記入するポメ!\n' + GSPREAD_URL + '\n14時時点で15人以上「勝ちに行く」なら勝ちにいく方針になるポメ\n忙しくて走れないと分かってる日は事前にその日を△にしとくといいポメ')
+            if now_time_str == '00:00':
+                await grablue_channel.send('お疲れ様ポメ！')
+            elif now_time_str == '07:00':
+                await publicize_channel.send('今日の相手に勝ちに行くかと、現在の肉の個数をシートに記入するポメ!\n' + GSPREAD_URL + '\n14時時点で15人以上「勝ちに行く」なら勝ちにいく方針になるポメ\n忙しくて走れないと分かってる日は事前にその日を△にしとくといいポメ')
             elif now_time_str == '14:00':
                 # シートのAPIで勝ちに行くの個数を取得してその結果によって発言を変えたい
                 channel = CLIENT.get_channel(PUBLICIZE_CHANNEL_ID)
