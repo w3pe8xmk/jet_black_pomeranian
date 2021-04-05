@@ -37,3 +37,4 @@ ex. `heroku config:set DISCORD_TOKEN=your_token`
     - loop だと1分ごとに余計な処理が走るのでより良い方法を検討
     - 古戦場の日程を別ファイルに置いておく->よりよくする
 - Discordの招待URLを教えてくれる
+- 団員のtwitter救援を拾えるようにしたい

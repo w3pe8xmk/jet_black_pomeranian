@@ -166,28 +166,28 @@ async def lucifer(channel):
         'dark',
         'narumea'
     ]
-    await add_reaction(al_target_message, reaction_list)
+    await add_reaction(target_message, reaction_list)
 
 
 async def ultimate_bahamut(channel):
     """ アルバハHLの募集をチャンネルに投げる
     """
-    ultimate_bahamut_target_message = await channel.send('アルバハHLの募集だポメ！\nリアクションした人から優先だポメ\n要望がなければ22時開始だポメ')
-    await add_reaction(ultimate_bahamut_target_message, ['hai'])
+    target_message = await channel.send('アルバハHLの募集だポメ！\nリアクションした人から優先だポメ\n要望がなければ22時開始だポメ')
+    await add_reaction(target_message, ['hai'])
 
 
 async def proto_bahamut(channel):
     """ つよバハの募集をチャンネルに投げる
     """
-    proto_bahamut_target_message = await channel.send('つよバハの募集だポメ！\n1部屋6人で自発者はサポでやるポメ\n要望がなければ21時開始だポメ')
-    await add_reaction(proto_bahamut_target_message, ['hai'])
+    target_message = await channel.send('つよバハの募集だポメ！\n1部屋6人で自発者はサポでやるポメ\n要望がなければ21時開始だポメ')
+    await add_reaction(target_message, ['hai'])
 
 
 async def beelzebub(channel):
     """ バブさんの募集をチャンネルに投げる
     """
-    bub_target_message = await channel.send('バブさんの募集だポメ！\n要望がなければ21時開始だポメ')
-    await add_reaction(bub_target_message, ['hai'])
+    target_message = await channel.send('バブさんの募集だポメ！\n要望がなければ21時開始だポメ')
+    await add_reaction(target_message, ['hai'])
 
 
 async def add_reaction(message, reaction_list):
