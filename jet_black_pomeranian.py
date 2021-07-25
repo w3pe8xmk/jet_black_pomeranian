@@ -1,13 +1,13 @@
 # coding: UTF-8
 import os
 import random
-import subprocess
 from datetime import datetime, timedelta, timezone
 
 import discord
 import yaml
 from discord.ext import tasks
 
+# 古戦場とドレバラのスケジュール
 schedule_file = open('schedule.yml', 'r+')
 schedule = yaml.load(schedule_file, Loader=yaml.SafeLoader)
 # 自分の Bot のアクセストークン
@@ -45,6 +45,7 @@ async def on_ready():
 async def on_message(message):
     """ メッセージ受信時に動作する処理
     """
+    # bot からのメッセージは無視
     if message.author.bot:
         return
     # リプライに反応する
@@ -100,7 +101,7 @@ async def loop():
     max_unite_and_fight_schedule = max(unite_and_fight_schedule.items())[1]
     unite_and_fight_start_at = datetime.strptime(max_unite_and_fight_schedule['start_at'], '%Y/%m/%d %z')
     unite_and_fight_end_at = datetime.strptime(max_unite_and_fight_schedule['end_at'], '%Y/%m/%d %z')
-    # ドレバラ
+    # ドレバラのスケジュール
     team_force_schedule = schedule['team_force']
     max_team_force_schedule = max(team_force_schedule.items())[1]
     team_force_start_at = datetime.strptime(max_team_force_schedule['start_at'], '%Y/%m/%d %z')
@@ -116,7 +117,7 @@ async def loop():
             await grablue_channel.send('古戦場予選開始ポメ。応援してるポメ！')
         # 毎日
         if now_time_str == '19:59':
-            await grablue_channel.send('団アビ発動するポメ!')
+            await grablue_channel.send('@団員 団アビ発動するポメ!')
         elif now_time_str == '21:59':
             await grablue_channel.send('2回目の団アビ発動し忘れてないポメ？')
         # 予選終了時
