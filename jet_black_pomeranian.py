@@ -107,9 +107,9 @@ async def loop():
     team_force_start_at = datetime.strptime(max_team_force_schedule['start_at'], '%Y/%m/%d %z')
     team_force_end_at = datetime.strptime(max_team_force_schedule['end_at'], '%Y/%m/%d %z')
 
-    # 古戦場三日前
-    if unite_and_fight_start_at - timedelta(days=3) == now:
-        await grablue_channel.send('古戦場3日前だポメ、次回古戦場シートに一言と目標を記入するポメ！\n' + GSPREAD_URL)
+    # 古戦場1日前
+    if unite_and_fight_start_at - timedelta(hours=5) == now:
+        await grablue_channel.send('明日から古戦場だポメ、次回古戦場シートに一言と目標を記入するポメ！\n' + GSPREAD_URL)
     # 古戦場期間中
     if unite_and_fight_start_at < now < unite_and_fight_end_at:
         # 予選開始時
