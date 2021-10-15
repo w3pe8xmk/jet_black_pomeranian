@@ -117,7 +117,7 @@ async def loop():
             await grablue_channel.send('古戦場予選開始ポメ。応援してるポメ！')
         # 毎日
         if now_time_str == '19:59':
-            await grablue_channel.send('@団員 団アビ発動するポメ!')
+            await grablue_channel.send('@here 団アビ発動するポメ!')
         elif now_time_str == '21:59':
             await grablue_channel.send('2回目の団アビ発動し忘れてないポメ？')
         # 予選終了時
@@ -149,15 +149,11 @@ async def loop():
 async def lucifer(channel):
     """ ルシファーの募集をチャンネルに投げる
     """
-    target_message = await channel.send('@here ダークラプチャー(HARD)の募集だポメ!\nやりたい属性にリアクションをするポメ\nやりたい人いれば手伝うくらいの人は別のリアクション押すポメ！\n要望がなければ21時開始だポメ')
+    target_message = await channel.send('@here ダークラプチャー(HARD)の募集だポメ!\n要望がなければ21時開始だポメ\n参加する討伐方法でリアクションするポメ！\n\U0001F1E6: 通常\n\U0001F1E7: システム\n\U0001F1E8: どちらも可')
     reaction_list = [
-        'fire',
-        'water',
-        'earth',
-        'wind',
-        'light',
-        'dark',
-        'narumea'
+        '\U0001F1E6', # A
+        '\U0001F1E7', # B
+        '\U0001F1E8', # C
     ]
     await add_reaction(target_message, reaction_list)
 
@@ -177,8 +173,13 @@ async def proto_bahamut(channel):
 async def beelzebub(channel):
     """ バブさんの募集をチャンネルに投げる
     """
-    target_message = await channel.send('@here バブさんの募集だポメ！\n要望がなければ21時開始だポメ')
-    await add_reaction(target_message, ['hai'])
+    target_message = await channel.send('@here バブさんの募集だポメ！\n要望がなければ21時開始だポメ\n参加する討伐方法でリアクションするポメ！\n\U0001F1E6: 通常\n\U0001F1E7: システム\n\U0001F1E8: どちらも可')
+    reaction_list = [
+        '\U0001F1E6', # A
+        '\U0001F1E7', # B
+        '\U0001F1E8', # C
+    ]
+    await add_reaction(target_message, reaction_list)
 
 async def belial(channel):
     """ ベリアルの募集をチャンネルに投げる
@@ -190,8 +191,12 @@ async def add_reaction(message, reaction_list):
     """ スタンプをメッセージに追加する
     """
     emoji_list = CLIENT.emojis
-    for data in emoji_list:
-        if data.name in reaction_list:
-            await message.add_reaction(str(data))
+    emoji_hash = {emoji.name: emoji for emoji in emoji_list}
+    for reaction in reaction_list:
+        if reaction in emoji_hash.keys():
+            await message.add_reaction(str(emoji_hash[reaction]))
+        else:
+            await message.add_reaction(reaction)
+
 
 CLIENT.run(DISCORD_TOKEN)
