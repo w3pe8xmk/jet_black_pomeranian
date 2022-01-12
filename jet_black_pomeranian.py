@@ -99,16 +99,20 @@ async def loop():
     # 古戦場のスケジュール
     unite_and_fight_schedule = schedule['unite_and_fight']
     max_unite_and_fight_schedule = max(unite_and_fight_schedule.items())[1]
-    unite_and_fight_start_at = datetime.strptime(max_unite_and_fight_schedule['start_at'], '%Y/%m/%d %z')
-    unite_and_fight_end_at = datetime.strptime(max_unite_and_fight_schedule['end_at'], '%Y/%m/%d %z')
+    unite_and_fight_start_at = datetime.strptime(
+        max_unite_and_fight_schedule['start_at'], '%Y/%m/%d %z')
+    unite_and_fight_end_at = datetime.strptime(
+        max_unite_and_fight_schedule['end_at'], '%Y/%m/%d %z')
     # ドレバラのスケジュール
     team_force_schedule = schedule['team_force']
     max_team_force_schedule = max(team_force_schedule.items())[1]
-    team_force_start_at = datetime.strptime(max_team_force_schedule['start_at'], '%Y/%m/%d %z')
-    team_force_end_at = datetime.strptime(max_team_force_schedule['end_at'], '%Y/%m/%d %z')
+    team_force_start_at = datetime.strptime(
+        max_team_force_schedule['start_at'], '%Y/%m/%d %z')
+    team_force_end_at = datetime.strptime(
+        max_team_force_schedule['end_at'], '%Y/%m/%d %z')
 
     # 古戦場1日前
-    if unite_and_fight_start_at - timedelta(hours=5) == now:
+    if unite_and_fight_start_at - timedelta(days=1) == now:
         await grablue_channel.send('明日から古戦場だポメ、次回古戦場シートに一言と目標を記入するポメ！\n' + GSPREAD_URL)
     # 古戦場期間中
     if unite_and_fight_start_at < now < unite_and_fight_end_at:
@@ -151,9 +155,9 @@ async def lucifer(channel):
     """
     target_message = await channel.send('@here ダークラプチャー(HARD)の募集だポメ!\n要望がなければ21時開始だポメ\n参加する討伐方法でリアクションするポメ！\n\U0001F1E6: 通常\n\U0001F1E7: システム\n\U0001F1E8: どちらも可')
     reaction_list = [
-        '\U0001F1E6', # A
-        '\U0001F1E7', # B
-        '\U0001F1E8', # C
+        '\U0001F1E6',  # A
+        '\U0001F1E7',  # B
+        '\U0001F1E8',  # C
     ]
     await add_reaction(target_message, reaction_list)
 
@@ -164,28 +168,32 @@ async def ultimate_bahamut(channel):
     target_message = await channel.send('@here アルバハHLの募集だポメ！\nリアクションした人から優先だポメ\n要望がなければ22時開始だポメ')
     await add_reaction(target_message, ['hai'])
 
+
 async def proto_bahamut(channel):
     """ つよバハの募集をチャンネルに投げる
     """
     target_message = await channel.send('@here つよバハの募集だポメ！\n1部屋6人で自発者はサポでやるポメ\n要望がなければ21時開始だポメ')
     await add_reaction(target_message, ['hai'])
 
+
 async def beelzebub(channel):
     """ バブさんの募集をチャンネルに投げる
     """
     target_message = await channel.send('@here バブさんの募集だポメ！\n要望がなければ21時開始だポメ\n参加する討伐方法でリアクションするポメ！\n\U0001F1E6: 通常\n\U0001F1E7: システム\n\U0001F1E8: どちらも可')
     reaction_list = [
-        '\U0001F1E6', # A
-        '\U0001F1E7', # B
-        '\U0001F1E8', # C
+        '\U0001F1E6',  # A
+        '\U0001F1E7',  # B
+        '\U0001F1E8',  # C
     ]
     await add_reaction(target_message, reaction_list)
+
 
 async def belial(channel):
     """ ベリアルの募集をチャンネルに投げる
     """
     target_message = await channel.send('@here ベリアルの募集だポメ！\n要望がなければ21時開始だポメ')
     await add_reaction(target_message, ['hai'])
+
 
 async def add_reaction(message, reaction_list):
     """ スタンプをメッセージに追加する
