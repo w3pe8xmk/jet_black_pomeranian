@@ -118,7 +118,7 @@ async def loop():
             '\U0001F1E6',  # A
             '\U0001F1E7',  # B
         ]
-    await add_reaction(target_message, reaction_list)
+        await add_reaction(target_message, reaction_list)
     # 古戦場1日前
     if unite_and_fight_start_at - timedelta(days=1) == now:
         await grablue_channel.send('明日から古戦場だポメ、次回古戦場シートに一言と目標を記入するポメ！\n' + GSPREAD_URL)
