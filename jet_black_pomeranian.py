@@ -100,16 +100,24 @@ async def loop():
     unite_and_fight_schedule = schedule['unite_and_fight']
     max_unite_and_fight_schedule = max(unite_and_fight_schedule.items())[1]
     unite_and_fight_start_at = datetime.strptime(
-        max_unite_and_fight_schedule['start_at'], '%Y/%m/%d %z')
+        max_unite_and_fight_schedule['start_at'],
+        '%Y/%m/%d %z'
+    )
     unite_and_fight_end_at = datetime.strptime(
-        max_unite_and_fight_schedule['end_at'], '%Y/%m/%d %z')
+        max_unite_and_fight_schedule['end_at'],
+        '%Y/%m/%d %z'
+    )
     # ドレバラのスケジュール
     team_force_schedule = schedule['team_force']
     max_team_force_schedule = max(team_force_schedule.items())[1]
     team_force_start_at = datetime.strptime(
-        max_team_force_schedule['start_at'], '%Y/%m/%d %z')
+        max_team_force_schedule['start_at'],
+        '%Y/%m/%d %z'
+    )
     team_force_end_at = datetime.strptime(
-        max_team_force_schedule['end_at'], '%Y/%m/%d %z')
+        max_team_force_schedule['end_at'],
+        '%Y/%m/%d %z'
+    )
 
     # 古戦場3日前
     if unite_and_fight_start_at - timedelta(days=3) == now:
