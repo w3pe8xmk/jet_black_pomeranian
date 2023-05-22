@@ -28,7 +28,12 @@ RECRUITMENT_CHANNEL_ID = os.environ['RECRUITMENT_CHANNEL_ID']
 # スプレッドシートのURL
 GSPREAD_URL = os.environ['GSPREAD_URL']
 
-CLIENT = discord.Client()
+# TODO:将来的にIntentは最低限にしたい
+intents = discord.Intents.all()
+#intents = discord.Intents.default()
+intents.typing = False
+
+CLIENT = discord.Client(intents=intents)
 JST = timezone(timedelta(hours=+9), 'JST')
 CHANNELS = {}
 
