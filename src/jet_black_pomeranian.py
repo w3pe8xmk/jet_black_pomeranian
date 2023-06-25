@@ -6,6 +6,11 @@ from datetime import datetime, timedelta, timezone
 import discord
 import yaml
 from discord.ext import tasks
+from dotenv import load_dotenv
+
+# 環境変数読み込み
+load_dotenv()
+
 
 # 古戦場とドレバラのスケジュール
 schedule_file = open('schedule.yml', 'r+')
@@ -23,7 +28,12 @@ RECRUITMENT_CHANNEL_ID = os.environ['RECRUITMENT_CHANNEL_ID']
 # スプレッドシートのURL
 GSPREAD_URL = os.environ['GSPREAD_URL']
 
-CLIENT = discord.Client()
+# TODO:将来的にIntentは最低限にしたい
+intents = discord.Intents.all()
+#intents = discord.Intents.default()
+intents.typing = False
+
+CLIENT = discord.Client(intents=intents)
 JST = timezone(timedelta(hours=+9), 'JST')
 CHANNELS = {}
 
@@ -83,6 +93,7 @@ async def on_message(message):
     # 「ベリアル募集」に反応する
     elif message.content == 'ベリアル募集':
         await belial(message.channel)
+
 
 # TODO: このやり方よくない、時間になったら実行されるようにしたい
 @tasks.loop(seconds=60)

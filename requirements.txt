@@ -1,2 +1,3 @@
-discord.py==1.6.0
+python-dotenv
 pyyaml
+discord.py
