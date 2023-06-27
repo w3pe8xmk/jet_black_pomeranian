@@ -13,7 +13,7 @@ load_dotenv()
 
 
 # 古戦場とドレバラのスケジュール
-schedule_file = open('app/schedule.yml', 'r+')
+schedule_file = open('schedule.yml', 'r+')
 schedule = yaml.load(schedule_file, Loader=yaml.SafeLoader)
 # 自分の Bot のアクセストークン
 DISCORD_TOKEN = os.environ['DISCORD_TOKEN']

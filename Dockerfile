@@ -1,13 +1,13 @@
 FROM python:3
 
 # 作業ディレクトリを作成
-WORKDIR /app
+WORKDIR /usr/src/jet_black_pomeranian
 
-# Botアプリケーションをコピー
-COPY . /app
+# 必要なファイルのみコピー
+COPY src .env requirements.txt schedule.yml .
 
-# リストを使って依存関係をインストール
+# 依存関係をインストール
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Bot起動
-CMD [ "python", "-u", "app/jet_black_pomeranian.py"]
+CMD [ "python", "-u", "jet_black_pomeranian.py"]
