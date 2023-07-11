@@ -26,7 +26,7 @@
 以下のコマンドで実行
 
 ```bash
-docker build -t jet_black_pomeranian .
+docker build -t jet_black_pomeranian ./
 docker run -it --rm jet_black_pomeranian
 ```
 
