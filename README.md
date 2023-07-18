@@ -27,7 +27,7 @@
 
 ```bash
 docker build -t jet_black_pomeranian ./
-docker run -it --rm jet_black_pomeranian
+docker run -d --rm jet_black_pomeranian
 ```
 
 ## Python3がインストール済みのLinux環境で実行する場合
