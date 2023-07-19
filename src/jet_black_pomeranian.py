@@ -157,7 +157,7 @@ async def loop():
             if now_time_str == '00:00':
                 await grablue_channel.send('お疲れ様ポメ！')
             elif now_time_str == '07:00':
-                await publicize_channel.send('今日の相手に勝ちに行くかと、現在の肉の個数をシートに記入するポメ!\n' + GSPREAD_URL + '\n14時時点で15人以上「勝ちに行く」なら勝ちにいく方針になるポメ\n忙しくて走れないと分かってる日は事前にその日を△にしとくといいポメ')
+                await publicize_channel.send('今日の相手に勝ちに行くかをシートに記入するポメ!\n' + GSPREAD_URL + '\n14時時点で15人以上「勝ちに行く」なら勝ちにいく方針になるポメ\n忙しくて走れないと分かってる日は事前にその日を△にしとくといいポメ')
             elif now_time_str == '14:00':
                 # TODO: シートのAPIで勝ちに行くの個数を取得してその結果によって発言を変えたい
                 await publicize_channel.send(GSPREAD_URL + '\nアンケートの結果を見るポメ！15人以上「勝ちに行く」なら勝ちにいくポメ！')
