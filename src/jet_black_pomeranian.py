@@ -132,7 +132,7 @@ async def loop():
 
     # 古戦場3日前
     if unite_and_fight_start_at - timedelta(days=3) == now:
-        await grablue_channel.send('3日後に古戦場が始まるポメ\n古戦場でATは3~5時になるポメ！')
+        await grablue_channel.send('3日後に古戦場が始まるポメ\n各自個人のアサルトタイムを見直すポメ！')
     # 古戦場1日前
     if unite_and_fight_start_at - timedelta(days=1) == now:
         await grablue_channel.send('明日から古戦場だポメ、次回古戦場シートに一言と目標を記入するポメ！\n' + GSPREAD_URL)
