@@ -1,0 +1,73 @@
+{
+    "name": "jet_black_pomeranian_dev",
+    "image": "mcr.microsoft.com/devcontainers/python:3.11-bullseye",
+    "containerEnv": {
+        "TZ": "Asia/Tokyo"
+    },
+    "runArgs": [
+        "--name=jet_black_pomeranian_dev"
+    ],
+    "features": {
+        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {} //ホストのDockerを使用可能にする
+    },
+    "postCreateCommand": "pip install --no-cache-dir -r requirements.txt",
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "editor.renderWhitespace": "all",
+                "editor.trimAutoWhitespace": true,
+                "[python]": {
+                    "diffEditor.ignoreTrimWhitespace": false,
+                    "gitlens.codeLens.symbolScopes": [
+                        "!Module"
+                    ],
+                    "editor.formatOnType": true,
+                    "editor.wordBasedSuggestions": false,
+                    "bracketLens.mode": "manual"
+                },
+                "[markdown]": {
+                    "editor.unicodeHighlight.ambiguousCharacters": false,
+                    "editor.unicodeHighlight.invisibleCharacters": false,
+                    "diffEditor.ignoreTrimWhitespace": false,
+                    "editor.wordWrap": "on",
+                    "editor.quickSuggestions": {
+                        "comments": "off",
+                        "strings": "off",
+                        "other": "off"
+                    },
+                    "editor.trimAutoWhitespace": false, // 改行のために半角スペース2つが必要
+                    "bracketLens.mode": "manual"
+                },
+                "[yaml]": {
+                    "editor.insertSpaces": true,
+                    "editor.tabSize": 2,
+                    "editor.autoIndent": "advanced",
+                    "diffEditor.ignoreTrimWhitespace": false,
+                    "editor.trimAutoWhitespace": false
+                }
+            },
+            "extensions": [
+				"ms-python.python",
+				"ms-azuretools.vscode-docker",
+				"njpwerner.autodocstring",
+				"GitHub.vscode-pull-request-github",
+				"yzhang.markdown-all-in-one",
+				"bierner.markdown-preview-github-styles",
+				"DavidAnson.vscode-markdownlint",
+				"MS-CEINTL.vscode-language-pack-ja",
+				"ms-python.vscode-pylance",
+				"ms-python.flake8",
+				"github.vscode-github-actions",
+				"codezombiech.gitignore",
+				"ms-vscode-remote.vscode-remote-extensionpack",
+				"mhutchie.git-graph",
+				"oderwat.indent-rainbow",
+				"ms-python.isort",
+				"nickdemayo.vscode-json-editor",
+				"redhat.vscode-yaml",
+				"mosapride.zenkaku",
+				"ICS.japanese-proofreading"
+			]
+        }
+    }
+}
