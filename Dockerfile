@@ -4,17 +4,11 @@ FROM python:3 AS base
 # 作業ディレクトリを作成
 WORKDIR /usr/src/jet_black_pomeranian
 
-# インストールが必要なリストをコンテナにコピー
-COPY requirements.txt ./
+# 必要なファイルのみコピー
+COPY src .env requirements.txt schedule.yml ./
 
-# コピーしたリストを使って依存関係をインストール
+# 依存関係をインストール
 RUN pip install --no-cache-dir -r requirements.txt
-
-# Botアプリケーションをコピー
-COPY src .
-
-# 必要な環境情報をコピー
-COPY schedule.yml .env ./
 
 # 後で追加予定
 
