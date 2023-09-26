@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "debug: current file",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "debug: execute bot",
+            "type": "python",
+            "request": "launch",
+            "program": "src/jet_black_pomeranian.py",
+            "console": "integratedTerminal"
+        },
+    ]
+}
