@@ -1,1 +1,12 @@
+# Ignore Python cache
+__pycache__/
+
+# Ignore Python
+*.pyc
+*.pyo
+*.egg-info/
+*.egg
+*.venv/
+
+# OS Environment File
 .env
