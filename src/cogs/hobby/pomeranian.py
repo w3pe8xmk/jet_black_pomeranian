@@ -11,7 +11,7 @@ class Pomeranian(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @app_commands.command(name="pome", description="ヒヒイロカネチャレンジ")
+    @app_commands.command(name="pome", description="ポメラニアン応答確認")
     async def pomeranian(self, interaction: discord.Interaction):
 
         now = datetime.now().strftime('%S')
