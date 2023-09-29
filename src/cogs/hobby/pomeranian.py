@@ -1,5 +1,5 @@
 
-import datetime
+from datetime import datetime
 
 import discord
 from discord import app_commands
