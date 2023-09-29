@@ -12,7 +12,7 @@ class HihiiroChallenge(commands.Cog):
         self.bot = bot
 
     @app_commands.command(name="hihi", description="ヒヒイロカネチャレンジ")
-    async def beelzebub(self, interaction: discord.Interaction):
+    async def hihiiro(self, interaction: discord.Interaction):
 
         rand = random.randint(1, 100)
 

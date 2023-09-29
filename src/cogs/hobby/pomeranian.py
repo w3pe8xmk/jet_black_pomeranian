@@ -12,7 +12,7 @@ class Pomeranian(commands.Cog):
         self.bot = bot
 
     @app_commands.command(name="pome", description="ヒヒイロカネチャレンジ")
-    async def beelzebub(self, interaction: discord.Interaction):
+    async def pomeranian(self, interaction: discord.Interaction):
 
         now = datetime.now().strftime('%S')
         response = 'キエエエェェェェーーーッ！！' if now == '01' else 'ワン！'
