@@ -3,11 +3,11 @@ FROM python:3 AS base
 
 # 作業ディレクトリを作成
 WORKDIR /usr/src/jet_black_pomeranian
-RUN pip install --no-cache-dir -r requirements.txt
-COPY src .
 
-# 必要な環境情報をコピー
-COPY schedule.yml .env ./
+# 必要なファイルを全てコピー
+COPY src schedule.yml .env requirements.txt ./
+
+RUN pip install --no-cache-dir -r requirements.txt
 
 # 後で追加予定
 
@@ -38,4 +38,4 @@ COPY schedule.yml .env ./
 FROM base AS production
 
 # Bot起動
-CMD [ "python", "-u", "jet_black_pomeranian.py"]
+CMD [ "python", "-m", "jet_black_pomeranian"]
