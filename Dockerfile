@@ -3,7 +3,7 @@ FROM python:3 AS base
 
 # 作業ディレクトリを作成
 WORKDIR /usr/src/jet_black_pomeranian
-@@ -13,7 +14,35 @@ RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 COPY src .
 
 # 必要な環境情報をコピー
